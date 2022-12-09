@@ -6,21 +6,21 @@ const db = require('../db');
 const saltRounds = 10;
 
 const registerStudent = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, saltRounds)
 
     try {
         const query = `
-        INSERT INTO students (email, hashedPassword, created_on, last_login)
-        VALUES ($1, $2, $3, )
-        RETURNING *
+            INSERT INTO students (name, email, password, created_on, last_login)
+            VALUES ($1, $2, $3, current_timestamp, current_timestamp)
+            RETURNING *
         `;
-        const values = [email, hashedPassword];
+        const values = [name, email, hashedPassword];
         const result = await db.query(query, values);
         const user = result.rows[0];
-
-        res.json(user);
+        console.log(user)
+        res.send(result);
     } catch (err: any) {
         res.status(500).json({ error: err.message });
     }
