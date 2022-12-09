@@ -1,6 +1,4 @@
 import express, { RequestHandler } from "express";
-import { Options, Sequelize } from 'sequelize';
-import { Pool } from "pg";
 const db = require('./db');
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
