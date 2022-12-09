@@ -20,15 +20,6 @@ app.use(cors());
 app.use('/api/student', require('./routes/student.routes'));
 
 
-const modelDefiners = [
-  require('./models/student.model')
-];
-
-// define all models according to their files
-// for (const model of modelDefiners) {
-//   model(sequelize);
-// }
-
 
 app.get("/", async (req, res) => {
   const rows = await db.query("SELECT * FROM chords");
@@ -36,11 +27,5 @@ app.get("/", async (req, res) => {
 });
 
 app.listen(port, async () => {
-  // try {
-  //   await sequelize.authenticate();
-  //   console.log('connect established successfully');
-  // } catch (err) {
-  //   console.log("unable to connnect: ", err)
-  // }
   console.log(`connected to database on port ${port}`);
 });
