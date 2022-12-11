@@ -1,4 +1,4 @@
-import { chordsTableQuery, dbInitQuery, seedChordsTable } from "./sqlQueries";
+import { chordsTableQuery, dbInitQuery, seedChordsTable } from "./queries";
 
 const { Pool, Client } = require('pg');
 require('dotenv').config();

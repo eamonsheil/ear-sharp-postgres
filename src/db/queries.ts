@@ -1,6 +1,5 @@
 export const dbInitQuery = `
-        DROP TABLE IF EXISTS students CASCADE;
-        CREATE TABLE students (
+        CREATE TABLE IF NOT EXISTS students (
             id serial PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL UNIQUE,
@@ -10,7 +9,6 @@ export const dbInitQuery = `
         );
     `
 export const chordsTableQuery = `
-        DROP TABLE IF EXISTS chords CASCADE;
         CREATE TABLE IF NOT EXISTS chords (
             id serial PRIMARY KEY,
             quality VARCHAR(255) NOT NULL,
