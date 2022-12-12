@@ -20,7 +20,8 @@ const registerStudent = async (req: Request, res: Response) => {
         const result = await db.query(query, values);
         const user = result.rows[0];
         console.log(user)
-        res.send(result);
+        res.status(200).send(result);
+
     } catch (err: any) {
         res.status(500).json({ error: err.message });
     }
@@ -28,21 +29,23 @@ const registerStudent = async (req: Request, res: Response) => {
 
 const loginStudent = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
+    console.log(req.body)
     try {
         const query = `
-        SELECT * FROM users
+        SELECT * FROM students
         WHERE email = $1
         `;
         const values = [email];
         const result = await db.query(query, values);
         const user = result.rows[0];
 
-        if (!user) {
+        const isValid = await bcrypt.compare(password, user.password)
+        if (user && isValid) {
+            return res.status(200).json(user)
+        } else {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
-        res.json(user);
     } catch (err: any) {
         res.status(500).json({ error: err.message });
     }
