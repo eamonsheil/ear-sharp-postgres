@@ -20,7 +20,7 @@ const registerStudent = async (req: Request, res: Response) => {
         const result = await db.query(query, values);
         const user = result.rows[0];
         console.log(user)
-        res.send(result);
+        res.status(200).send(result);
     } catch (err: any) {
         res.status(500).json({ error: err.message });
     }
