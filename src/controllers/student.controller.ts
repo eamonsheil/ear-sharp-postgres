@@ -14,15 +14,14 @@ const registerStudent = async (req: Request, res: Response) => {
         const query = `
             INSERT INTO students (name, email, password, created_on, last_login)
             VALUES ($1, $2, $3, current_timestamp, current_timestamp)
-            RETURNING *
         `;
         const values = [name, email, hashedPassword];
         const result = await db.query(query, values);
         const user = result.rows[0];
         console.log(user)
-        res.status(200).send(result);
+        res.status(200).send(user);
     } catch (err: any) {
-        res.status(500).json({ error: err.message });
+        res.status(401).json({ error: "email already registered" });
     }
 };
 
