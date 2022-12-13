@@ -8,8 +8,6 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3333;
 
-// const sequelize = new Sequelize(process.env.DATABASE_URL as Options);
-
 
 app.use(express.json() as RequestHandler);
 app.use(express.urlencoded({ extended: true }) as RequestHandler);

@@ -1,6 +1,7 @@
 // const app = require('express');
 import { Request, Response } from "express";
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from "../models/student.model";
 const db = require('../db');
 
 const saltRounds = 10;
@@ -17,7 +18,7 @@ const registerStudent = async (req: Request, res: Response) => {
         `;
         const values = [name, email, hashedPassword];
         const result = await db.query(query, values);
-        const user = result.rows[0];
+        const user: CreateUserDto = result.rows[0];
         console.log(user)
         res.status(200).send(user);
     } catch (err: any) {
@@ -39,7 +40,11 @@ const loginStudent = async (req: Request, res: Response) => {
 
         const isValid = await bcrypt.compare(password, user.password)
         if (user && isValid) {
-            return res.status(200).json(user)
+            await db.query(`
+                UPDATE students SET last_login=CURRENT_TIMESTAMP 
+                WHERE email=$1
+            `, [email]);
+            return res.status(200).json(user);
         } else {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
