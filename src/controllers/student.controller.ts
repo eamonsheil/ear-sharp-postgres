@@ -1,5 +1,5 @@
 // const app = require('express');
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { CreateUserDto } from "../models/student.model";
@@ -7,7 +7,7 @@ const db = require('../db');
 
 const saltRounds = 10;
 
-const registerStudent = async (req: Request, res: Response) => {
+const registerStudent: RequestHandler = async (req, res) => {
     const { name, email, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, saltRounds)
@@ -38,7 +38,7 @@ const registerStudent = async (req: Request, res: Response) => {
     }
 };
 
-const loginStudent = async (req: Request, res: Response) => {
+const loginStudent: RequestHandler = async (req, res) => {
     const { email, password } = req.body;
     console.log(req.signedCookies)
     try {
@@ -85,16 +85,16 @@ const loginStudent = async (req: Request, res: Response) => {
 
 const generateToken = (id: number): string => {
 
-    return jwt.sign({ id }, "earsharp", {
+    return jwt.sign({ id }, process.env.JWT_SECRET as jwt.Secret, {
         expiresIn: 90_000_000
     })
 }
 
-const getStudent = async (req: Request, res: Response) => {
+const getStudent: RequestHandler = async (req, res) => {
     console.log(res)
 };
 
-const logoutStudent = async (req: Request, res: Response) => {
+const logoutStudent: RequestHandler = async (req, res) => {
     console.log(res)
 };
 
