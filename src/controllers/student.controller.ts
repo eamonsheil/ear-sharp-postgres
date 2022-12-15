@@ -40,7 +40,7 @@ const registerStudent = async (req: Request, res: Response) => {
 
 const loginStudent = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    console.log(req.signedCookies['access_token'])
+    console.log(req.signedCookies)
     try {
         const query = `
             SELECT * FROM students
@@ -59,6 +59,7 @@ const loginStudent = async (req: Request, res: Response) => {
             await db.query(`
                 UPDATE students SET last_login=CURRENT_TIMESTAMP 
                 WHERE email=$1
+                RETURNING *
             `, [email]);
 
             const token = generateToken(user.id);
@@ -82,10 +83,10 @@ const loginStudent = async (req: Request, res: Response) => {
 
 
 
-const generateToken = (id: string): string => {
+const generateToken = (id: number): string => {
 
-    return jwt.sign({ id }, process.env.JWT_SECRET as jwt.Secret, {
-        expiresIn: '3d'
+    return jwt.sign({ id }, "earsharp", {
+        expiresIn: 90_000_000
     })
 }
 
