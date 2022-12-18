@@ -10,4 +10,5 @@ router.get('/logout', logoutStudent)
 
 
 
+
 module.exports = router;

@@ -13,6 +13,7 @@ export const validateJwt: RequestHandler = (req, res, next) => {
         return res.status(400).send("No access token")
     }
     try {
+        console.log(req.cookies())
         const token = req.headers.authorization.split(' ')[1];
         if (!token) {
             throw new Error('Authentication failed!');

@@ -35,10 +35,10 @@ const registerStudent: RequestHandler = async (req, res) => {
 
         const token = generateToken(user.id);
 
-        res.cookie('access token', token, {
+        res.cookie('access_token', token, {
             httpOnly: true,
             maxAge: 90_000_000 * 2,
-            signed: true
+            // signed: true
         });
 
         return res
@@ -105,7 +105,7 @@ const generateToken = (id: number): string => {
 const getStudent: RequestHandler = async (req, res) => {
     const { body: { user } } = req;
     const result = await db.query(` 
-        SELECT * FROM students, chord_scores, pitch_scores 
+        SELECT * FROM students 
         WHERE id=$1
         `, [user.id])
 
@@ -113,7 +113,10 @@ const getStudent: RequestHandler = async (req, res) => {
 };
 
 const logoutStudent: RequestHandler = async (req, res) => {
-    console.log(res)
+    return res
+        .clearCookie('token')
+        .status(200)
+        .json({ message: "successfully logged out" });
 };
 
 

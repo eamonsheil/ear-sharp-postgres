@@ -10,24 +10,22 @@ export const createStudentsTable = `
     `
 
 export const createChordScoresTable = `
-    DROP TABLE IF EXISTS chord_scores;
-    CREATE TABLE IF NOT EXISTS chord_scores (
-        total_attempts INT DEFAULT 0,
-        num_correct INT DEFAULT 0,
-        num_incorrect INT DEFAULT 0,
-        current_streak INT DEFAULT 0,
-        student_id INT REFERENCES students(id)
+        CREATE TABLE IF NOT EXISTS chord_scores (
+            total_attempts INT DEFAULT 0,
+            num_correct INT DEFAULT 0,
+            num_incorrect INT DEFAULT 0,
+            current_streak INT DEFAULT 0,
+            student_id INT REFERENCES students(id)
         );
     `
 
 export const createPitchScoresTable = `
-    DROP TABLE IF EXISTS pitch_scores;
-    CREATE TABLE IF NOT EXISTS pitch_scores (
-        total_attempts INT DEFAULT 0,
-        num_correct INT DEFAULT 0,
-        num_incorrect INT DEFAULT 0,
-        current_streak INT DEFAULT 0,
-        student_id INT REFERENCES students (id)
+        CREATE TABLE IF NOT EXISTS pitch_scores (
+            total_attempts INT DEFAULT 0,
+            num_correct INT DEFAULT 0,
+            num_incorrect INT DEFAULT 0,
+            current_streak INT DEFAULT 0,
+            student_id INT REFERENCES students (id)
         );
     `
 
