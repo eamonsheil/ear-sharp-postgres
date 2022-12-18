@@ -1,4 +1,9 @@
-import { chordsTableQuery, dbInitQuery, seedChordsTable } from "./queries";
+import {
+    createChordScoresTable,
+    createPitchScoresTable,
+    createStudentsTable,
+    seedChordsTable
+} from "./queries";
 
 import { Pool, Client } from 'pg';
 require('dotenv').config();
@@ -8,9 +13,10 @@ const client = new Client();
 
 
 client.connect()
-client.query(dbInitQuery);
-client.query(chordsTableQuery);
-client.query(seedChordsTable)
+client.query(createStudentsTable);
+client.query(createChordScoresTable);
+client.query(createPitchScoresTable)
+    // client.query(seedChordsTable)
     .then(() => client.end());
 
 module.exports = {

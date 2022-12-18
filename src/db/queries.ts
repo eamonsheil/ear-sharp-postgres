@@ -1,6 +1,6 @@
-export const dbInitQuery = `
+export const createStudentsTable = `
         CREATE TABLE IF NOT EXISTS students (
-            id serial PRIMARY KEY,
+            student_id serial PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
@@ -8,7 +8,31 @@ export const dbInitQuery = `
             last_login TIMESTAMP NOT NULL DEFAULT current_timestamp
         );
     `
-export const chordsTableQuery = `
+
+export const createChordScoresTable = `
+    DROP TABLE IF EXISTS chord_scores;
+    CREATE TABLE IF NOT EXISTS chord_scores (
+        total_attempts INT DEFAULT 0,
+        num_correct INT DEFAULT 0,
+        num_incorrect INT DEFAULT 0,
+        current_streak INT DEFAULT 0,
+        student_id INT REFERENCES students(id)
+        );
+    `
+
+export const createPitchScoresTable = `
+    DROP TABLE IF EXISTS pitch_scores;
+    CREATE TABLE IF NOT EXISTS pitch_scores (
+        total_attempts INT DEFAULT 0,
+        num_correct INT DEFAULT 0,
+        num_incorrect INT DEFAULT 0,
+        current_streak INT DEFAULT 0,
+        student_id INT REFERENCES students (id)
+        );
+    `
+
+
+export const createChordsTable = `
         CREATE TABLE IF NOT EXISTS chords (
             id serial PRIMARY KEY,
             quality VARCHAR(255) NOT NULL,
@@ -47,3 +71,12 @@ export const seedChordsTable = `
         INSERT INTO chords (quality, root_position, first_inversion, second_inversion, third_inversion)
         VALUES ('half_diminished', ARRAY [0,3,6,10], ARRAY [0,3,7,9], ARRAY [0,4,6,9], ARRAY [0,2,5,8]);
     `
+
+
+
+    // INSERT INTO pitch_scores (student_id)
+    //         VALUES (new_student_id)
+    //         RETURNING total_attempts, num_correct,
+    //         num_incorrect, current_streak
+    //         INTO pitch_total_attempts, pitch_num_correct,
+    //         pitch_num_incorrect, pitch_current_streak
