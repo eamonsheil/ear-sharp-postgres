@@ -24,8 +24,7 @@ app.use(
       }
     },
     optionsSuccessStatus: 200,
-    methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
-    credentials: true
+    credentials: true,
   })
 );
 
