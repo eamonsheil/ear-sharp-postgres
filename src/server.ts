@@ -11,7 +11,7 @@ const port = process.env.PORT || 3333;
 
 
 
-const allowedOrigins = ["http://127.0.0.1:5173", "http://earsharpener.net"];
+const allowedOrigins = ["http://127.0.0.1:5173", "http://earsharpener.net", "https://earsharpener.net"];
 
 app.use(
   cors({
