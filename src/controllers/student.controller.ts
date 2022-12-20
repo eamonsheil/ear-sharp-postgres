@@ -44,7 +44,7 @@ const registerStudent: RequestHandler = async (req, res) => {
 
         return res
             .status(200)
-            .send({ ...user, token });
+            .send(user);
     } catch (err: any) {
         res.status(401).json(err.message);
     }
@@ -85,12 +85,12 @@ const loginStudent: RequestHandler = async (req, res) => {
 
             return res
                 .status(200)
-                .send({ ...user, token: token });
+                .send(user);
         } else {
             throw new Error('Invalid Password')
         }
     } catch (err: any) {
-        res.status(500).json(err.message);
+        res.status(500).json({ err });
     }
 }
 
@@ -114,8 +114,15 @@ const getStudent: RequestHandler = async (req, res) => {
 };
 
 const logoutStudent: RequestHandler = async (req, res) => {
+    // overwrites cookie to contain no data, and sets an expiry for 3 seconds from now
+    console.log('overwriting cookie....')
     return res
-        .clearCookie('access_token')
+        .cookie('access_token', '', {
+            expires: new Date(Date.now() + 3 * 100),
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true
+        })
         .status(200)
         .json({ message: "successfully logged out" });
 };
