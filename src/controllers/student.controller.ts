@@ -37,8 +37,9 @@ const registerStudent: RequestHandler = async (req, res) => {
 
         res.cookie('access_token', token, {
             httpOnly: true,
-            maxAge: 90_000_000 * 2,
-            // signed: true
+            sameSite: 'none',
+            maxAge: 90_000 * 3,
+            secure: true
         });
 
         return res
@@ -50,6 +51,7 @@ const registerStudent: RequestHandler = async (req, res) => {
 };
 
 const loginStudent: RequestHandler = async (req, res) => {
+    // console.log(req.headers["access_token"])
     const { email, password } = req.body;
     try {
         const query = `
@@ -70,15 +72,14 @@ const loginStudent: RequestHandler = async (req, res) => {
                 UPDATE students 
                 SET last_login=CURRENT_TIMESTAMP 
                 WHERE email=$1
-                RETURNING *
             `, [email]);
 
             const token = generateToken(user.id);
 
-            res.cookie('jwt', token, {
+            res.cookie('access_token', token, {
                 httpOnly: true,
-                maxAge: 90_000_000 * 3,
-                signed: true,
+                sameSite: 'none',
+                maxAge: 90_000 * 3,
                 secure: true
             });
 
@@ -98,14 +99,14 @@ const loginStudent: RequestHandler = async (req, res) => {
 const generateToken = (id: number): string => {
 
     return jwt.sign({ id }, process.env.JWT_SECRET as jwt.Secret, {
-        expiresIn: '7d'
+        expiresIn: '3h'
     })
 }
 
 const getStudent: RequestHandler = async (req, res) => {
     const { body: { user } } = req;
     const result = await db.query(` 
-        SELECT * FROM students 
+        SELECT id, name, email FROM students 
         WHERE id=$1
         `, [user.id])
 
@@ -114,7 +115,7 @@ const getStudent: RequestHandler = async (req, res) => {
 
 const logoutStudent: RequestHandler = async (req, res) => {
     return res
-        .clearCookie('token')
+        .clearCookie('access_token')
         .status(200)
         .json({ message: "successfully logged out" });
 };

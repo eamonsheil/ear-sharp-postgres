@@ -23,17 +23,14 @@ app.use(
           allow access from the specified Origin.`), false);
       }
     },
-    optionsSuccessStatus: 200,
+    // optionsSuccessStatus: 200,
     credentials: true,
   })
 );
 
-
-
 app.use(express.json() as RequestHandler);
 app.use(express.urlencoded({ extended: true }) as RequestHandler);
 app.use(cookieParser());
-app.use(cors());
 app.use(helmet());
 
 
@@ -41,8 +38,7 @@ app.use('/api/student', require('./routes/student.routes'));
 
 
 app.get("/", async (req, res) => {
-  const rows = await db.query("SELECT * FROM chords");
-  res.send(rows)
+  res.json({ message: "welcome to the Ear Sharpener API! What are you doing here?" })
 });
 
 app.listen(port, async () => {

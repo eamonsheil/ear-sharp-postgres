@@ -9,19 +9,20 @@ export type validatedUser = {
 }
 
 export const validateJwt: RequestHandler = (req, res, next) => {
-    if (!req.headers.authorization) {
-        return res.status(400).send("No access token")
+    const token = req.cookies['access_token'];
+    // console.log(token)
+
+    if (!token) {
+        return res.status(400).send({ message: "No token provided" })
     }
-    try {
-        console.log(req.cookies())
-        const token = req.headers.authorization.split(' ')[1];
-        if (!token) {
-            throw new Error('Authentication failed!');
-        }
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.body.user = verified;
-        next();
-    } catch (err) {
-        res.status(400).send('Invalid token !');
-    }
+    jwt.verify(token, process.env.JWT_SECRET,
+        (err: unknown, decoded: any) => {
+            if (err) {
+                return res.status(401).send({
+                    message: "Unauthorized!"
+                });
+            }
+            req.body.user = decoded;
+            next();
+        });
 };
