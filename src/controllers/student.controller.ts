@@ -51,7 +51,6 @@ const registerStudent: RequestHandler = async (req, res) => {
 };
 
 const loginStudent: RequestHandler = async (req, res) => {
-    // console.log(req.headers["access_token"])
     const { email, password } = req.body;
     try {
         const query = `
@@ -63,7 +62,7 @@ const loginStudent: RequestHandler = async (req, res) => {
         const user = result.rows[0];
 
         if (!user) {
-            throw new Error('Invalid Email')
+            throw 'Invalid Email'
         }
 
         const isValid = await bcrypt.compare(password, user.password);
@@ -87,10 +86,11 @@ const loginStudent: RequestHandler = async (req, res) => {
                 .status(200)
                 .send(user);
         } else {
-            throw new Error('Invalid Password')
+            throw 'Invalid Password'
         }
-    } catch (err: any) {
-        res.status(500).json({ err });
+    } catch (error: any) {
+        console.log("errors: ", error)
+        res.status(500).json({ error });
     }
 }
 
@@ -126,6 +126,5 @@ const logoutStudent: RequestHandler = async (req, res) => {
         .status(200)
         .json({ message: "successfully logged out" });
 };
-
 
 module.exports = { registerStudent, loginStudent, getStudent, logoutStudent }
