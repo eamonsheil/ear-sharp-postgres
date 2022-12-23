@@ -7,11 +7,11 @@ const { getPitchScore, getAllPitchScores, updatePitchScore } = require('../contr
 
 router.get('/chords', getAllChordScores)
 router.get('/chord', validateJwt, getChordScore)
-router.post('/chord', updateChordScore)
+router.post('/chord', validateJwt, updateChordScore)
 
 router.get('/pitches', getAllPitchScores)
 router.get('/pitch', validateJwt, getPitchScore)
-router.post('/pitch', updatePitchScore)
+router.post('/pitch', validateJwt, updatePitchScore)
 
 
 
