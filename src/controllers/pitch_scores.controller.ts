@@ -28,6 +28,8 @@ const getAllPitchScores: RequestHandler = (req, res) => {
 
 const updatePitchScore: RequestHandler = async (req, res) => {
     const { user, total_attempts, num_correct, num_incorrect, current_streak } = req.body;
+    const new_streak = current_streak < 0 ? 0 : current_streak + 1;
+
     try {
         const query = `
         UPDATE pitch_scores
@@ -35,11 +37,11 @@ const updatePitchScore: RequestHandler = async (req, res) => {
             total_attempts = total_attempts + $1, 
             num_correct = num_correct + $2,
             num_incorrect = num_incorrect + $3,
-            current_streak = current_streak + $4
+            current_streak = $4
         WHERE student_id = $5
         RETURNING *
         `
-        const result = await db.query(query, [total_attempts, num_correct, num_incorrect, current_streak, user.id])
+        const result = await db.query(query, [total_attempts, num_correct, num_incorrect, new_streak, user.id])
         res.send(result)
     } catch (err) {
         console.log(err)

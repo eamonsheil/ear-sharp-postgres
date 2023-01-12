@@ -38,7 +38,7 @@ const registerStudent: RequestHandler = async (req, res) => {
         res.cookie('access_token', token, {
             httpOnly: true,
             sameSite: 'none',
-            maxAge: 90_000 * 3,
+            maxAge: 60_000 * 60, // 1 hr
             secure: true
         });
 
@@ -78,7 +78,7 @@ const loginStudent: RequestHandler = async (req, res) => {
             res.cookie('access_token', token, {
                 httpOnly: true,
                 sameSite: 'none',
-                maxAge: 90_000 * 3,
+                maxAge: 60_000 * 60,
                 secure: true
             });
 
