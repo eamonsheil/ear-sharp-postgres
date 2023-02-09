@@ -1,8 +1,7 @@
 import {
     createChordScoresTable,
     createPitchScoresTable,
-    createStudentsTable,
-    seedChordsTable
+    createUsersTable,
 } from "./queries";
 
 import { Pool, Client } from 'pg';
@@ -13,10 +12,9 @@ const client = new Client();
 
 
 client.connect()
-client.query(createStudentsTable);
+client.query(createUsersTable);
 client.query(createChordScoresTable);
 client.query(createPitchScoresTable)
-    // client.query(seedChordsTable)
     .then(() => client.end());
 
 module.exports = {

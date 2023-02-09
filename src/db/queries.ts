@@ -1,9 +1,7 @@
-export const createStudentsTable = `
-        CREATE TABLE IF NOT EXISTS students (
-            student_id serial PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
+export const createUsersTable = `
+        CREATE TABLE IF NOT EXISTS users (
+            id serial PRIMARY KEY,
             email VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
             created_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
             last_login TIMESTAMP NOT NULL DEFAULT current_timestamp
         );
@@ -15,7 +13,7 @@ export const createChordScoresTable = `
             num_correct INT DEFAULT 0,
             num_incorrect INT DEFAULT 0,
             current_streak INT DEFAULT 0,
-            student_id INT REFERENCES students(id)
+            user_id INT REFERENCES users(id)
         );
     `
 
@@ -25,7 +23,7 @@ export const createPitchScoresTable = `
             num_correct INT DEFAULT 0,
             num_incorrect INT DEFAULT 0,
             current_streak INT DEFAULT 0,
-            student_id INT REFERENCES students (id)
+            user_id INT REFERENCES users (id)
         );
     `
 

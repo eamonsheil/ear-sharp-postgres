@@ -3,13 +3,13 @@ import { RequestHandler } from "express";
 const db = require('../db');
 
 const getPitchScore: RequestHandler = async (req, res) => {
-    const { user } = req.body;
+    const id = req.cookies.api_access;
     try {
         const query = `
             SELECT total_attempts, num_correct, num_incorrect, current_streak FROM pitch_scores
-            WHERE student_id = $1
+            WHERE user_id = $1
         `
-        const result = await db.query(query, [user.id])
+        const result = await db.query(query, [id])
         res.status(200).send(result)
     } catch (err) {
         if (typeof err === "string") {
@@ -27,7 +27,8 @@ const getAllPitchScores: RequestHandler = (req, res) => {
 
 
 const updatePitchScore: RequestHandler = async (req, res) => {
-    const { user, total_attempts, num_correct, num_incorrect, current_streak } = req.body;
+    const { total_attempts, num_correct, num_incorrect, current_streak } = req.body;
+    const id = req.cookies.api_access;
     const new_streak = current_streak < 0 ? 0 : current_streak + 1;
 
     try {
@@ -38,10 +39,10 @@ const updatePitchScore: RequestHandler = async (req, res) => {
             num_correct = num_correct + $2,
             num_incorrect = num_incorrect + $3,
             current_streak = $4
-        WHERE student_id = $5
+        WHERE user_id = $5
         RETURNING *
         `
-        const result = await db.query(query, [total_attempts, num_correct, num_incorrect, new_streak, user.id])
+        const result = await db.query(query, [total_attempts, num_correct, num_incorrect, new_streak, id])
         res.send(result)
     } catch (err) {
         console.log(err)
